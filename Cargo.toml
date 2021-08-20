@@ -1,12 +1,12 @@
 [package]
 name = "tantivy-cli"
 version = "0.15.0"
-authors = ["Paul Masurel <paul.masurel@gmail.com>"]
+authors = ["Paul Masurel <paul.masurel@gmail.com>", "Derek Zhou <derek@3qin.us>"]
 
 description = """Command line interface for Tantivy, a search engine library."""
-documentation = "https://github.com/quickwit-inc/tantivy-cli"
-homepage = "https://github.com/quickwit-inc/tantivy-cli"
-repository = "https://github.com/quickwit-inc/tantivy-cli"
+documentation = "https://github.com/derek/tantivy-cli"
+homepage = "https://github.com/derek/tantivy-cli"
+repository = "https://github.com/derek/tantivy-cli"
 
 readme = "README.md"
 keywords = ["search", "information", "retrieval"]
@@ -30,6 +30,7 @@ log = "0.4"
 futures = "0.3"
 env_logger = "0.7"
 tantivy = "0.15"
+tokio = { version = "1.9.0", features = ["rt", "rt-multi-thread", "time"] }
 
 [[bin]]
 name = "tantivy"
@@ -40,4 +41,4 @@ path = "src/main.rs"
 opt-level = 3
 debug = true
 debug-assertions = false
-lto = true
+lto = false

@@ -100,6 +100,11 @@ fn main() {
                 .about("Merge all the segments of an index")
                 .arg(index_arg.clone())
         )
+	.subcommand(
+	    App::new("port")
+		.about("Serve requests through stdin and stdout with a erlang port protocol")
+                .arg(index_arg.clone())
+	)		
         .get_matches();
 
     let (subcommand, some_options) = cli_options.subcommand();
@@ -111,6 +116,7 @@ fn main() {
         "search" => run_search_cli,
         "merge" => run_merge_cli,
         "bench" => run_bench_cli,
+	"port" => run_port_cli,
         _ => panic!("Subcommand {} is unknown", subcommand),
     };
 
