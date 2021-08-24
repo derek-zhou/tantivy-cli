@@ -224,7 +224,7 @@ fn handle_posted_message(m: &Message, command: PostedCommand, writer: &mut Index
 	    } else {
 		let s = std::str::from_utf8(&data).unwrap();
 		let doc = schema.parse_document(s).unwrap();
-		run_posted_command_with_doc(command, doc, writer);
+		run_posted_command_with_doc(command, doc, writer, schema);
 		PostedCommand::Init
 	    }
 	}
@@ -234,7 +234,7 @@ fn handle_posted_message(m: &Message, command: PostedCommand, writer: &mut Index
 	    } else {
 		let s = std::str::from_utf8(&data).unwrap();
 		let doc = schema.parse_document(s).unwrap();
-		run_posted_command_with_doc(command, doc, writer);
+		run_posted_command_with_doc(command, doc, writer, schema);
 		command
 	    }
 	}
@@ -351,9 +351,15 @@ fn parse_posted_command(data: &[u8]) -> PostedCommand {
     }
 }
 
-fn run_posted_command_with_doc(command: PostedCommand, doc: Document, writer: &mut IndexWriter) {
+fn run_posted_command_with_doc(command: PostedCommand, doc: Document,
+			       writer: &mut IndexWriter, schema: &Schema) {
     match command {
 	PostedCommand::Add => {
+	    writer.add_document(doc);
+	}
+	PostedCommand::Remove(id) => {
+	    let id_field = schema.get_field("id").unwrap();
+	    writer.delete_term(Term::from_field_u64(id_field, id));
 	    writer.add_document(doc);
 	}
 	_ => panic!("unsupported command"),
