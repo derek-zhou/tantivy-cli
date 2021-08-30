@@ -239,3 +239,13 @@ You can run it with the following command.
 ```
     tantivy bench -i wikipedia-index -n 10 -q queries.txt
 ```
+
+# port server: `port`
+
+You may use the `port` command to run a server process that is fully controlled by the stdin/stdout, to be used as a full text search component in a Erlang/Elixir application. Please also see the [Elixir part](https://github.com/derek-zhou/tantivy-erl). Please note the command is meant to be run from within a Erlang/Elixir application:
+
+```
+	tantivy port -i wikipedia-index
+```
+
+The schema must be defined previously via `tantivy new -i ...`. The wire protocol use a split command/completion style, so multiple requests can be executed in parallel and completed out of order. Right now, all writes are executed in order in a dedicated thread, to ensure data integrity and to enable batch commiting. All search requests are executed in parallel via [Tokio](https://github.com/tokio-rs/tokio)
